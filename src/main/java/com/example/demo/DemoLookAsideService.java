@@ -1,13 +1,9 @@
 package com.example.demo;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +22,17 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class DemoService {
-    private static final Logger logger = LoggerFactory.getLogger(DemoService.class);
+public class DemoLookAsideService {
+    private static final Logger logger = LoggerFactory.getLogger(DemoLookAsideService.class);
 
     // You can set URL for cache.
-    @Cacheable(value = "myAwesomeCache", cacheManager = "contentCacheManager", condition = "#url.startsWith('/realApplication/')", key = "#url + '::' + #param")
+    // The 'value' is a delimiter of cache group, 'key' is a deplimiter inside of the 'value'
+    @Cacheable(value = "myLookAsideCache", cacheManager = "contentCacheManager", condition = "#url.startsWith('/realApplication/')", key = "#url + '::' + #param")
     public Map getRestData(String host, String url, Map param, HttpMethod method) {
         return getRestDataWithSession(host, url, param, method, null);
     }
 
+    // The 'session' is for identity authentication process. You can change it with Authorization token.
     public Map getRestDataWithSession(String host, String url, Map param, HttpMethod method, String sessionId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -80,11 +78,24 @@ public class DemoService {
             if (builder.length() > 0) {
                 builder.append("&");
             }
-            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
+
+            if (needEncode) {
+                try {
+                    builder.append(URLEncoder.encode(entry.getKey().toString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                builder.append(entry.getKey().toString());
+            }
             builder.append("=");
 
             if (needEncode) {
-                builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+                try {
+                    builder.append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             } else {
                 builder.append(entry.getValue().toString());
             }
