@@ -10,9 +10,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://222.239.193.15:30010/iotdb?useSSL=false&useUnicode=true
-    username: root
-    password: password
+    url: jdbc:mysql://mysql01.armyost.com:30010/iotdb?useSSL=false&useUnicode=true
+    username: XXXX
+    password: XXXX
 
   ## JPA Setting Info
   jpa:
