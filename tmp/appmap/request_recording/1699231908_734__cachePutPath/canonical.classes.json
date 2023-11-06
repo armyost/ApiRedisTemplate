@@ -1,0 +1,5 @@
+[
+  "com/example/demo/DemoWriteBackController",
+  "com/example/demo/DemoWriteBackService",
+  "com/example/demo/SampleEntity"
+]

@@ -1,34 +1,14 @@
 package com.example.demo;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.util.*;
-
-import org.apache.el.stream.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.data.redis.core.Cursor;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-
-import lombok.RequiredArgsConstructor;
 import lombok.var;
-import net.bytebuddy.implementation.bind.annotation.SuperCall;
 
 @Service
 public class DemoWriteBackService {
@@ -45,6 +25,7 @@ public class DemoWriteBackService {
         this.redisTemplate = redisTemplate;
     }
 
+    // 1. Entity creation method. Let the entity save at redis cache store.
     @Transactional
     public SampleEntity create (int paramId, String paramValue){
         final var sampleEntity = new SampleEntity();
@@ -53,12 +34,50 @@ public class DemoWriteBackService {
         sampleEntity.setId(paramId);
         sampleEntity.setValue(paramValue);
 
+        // Write common data in cache-store.
         redisTemplate.boundValueOps(Integer.toString(sampleEntity.getId())).set(sampleEntity);
+
+        // Write data what to sync with databse in cache-store.
         redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY).add(sampleEntity);
 
         return sampleEntity;
     }
 
+    // 2. Back-ground scheduler method. The schduler will retreive entities from redis cache store. And will write down on database;
+    @Scheduled(fixedDelay = 60000)
+    public void writeBack() {
+
+        // Scan datas in set names "write_back".
+        final var amountOfsampleEntityToPersist = redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY).size();
+        if (amountOfsampleEntityToPersist == null || amountOfsampleEntityToPersist == 0) {
+            logger.info("None entity to write back from cache to database");
+            return;
+        }
+
+        logger.info("Found {} Entity to write back from cache to database", amountOfsampleEntityToPersist);
+        final var setOperations = redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY);
+        final var scanOptions = ScanOptions.scanOptions().build();
+
+        try (final var cursor = setOperations.scan(scanOptions)) {
+            assert cursor != null;
+            while (cursor.hasNext()) {
+                final var sampleEntity = cursor.next();
+
+                // Write the datas to sync on database.
+                sampleEntityRepository.save(sampleEntity);
+                logger.info("Entity saved (Entity={})", sampleEntity);
+
+                // Remove datas on set names "write_back".
+                redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY).remove(sampleEntity);
+                logger.info("Entity removed from {} set (Entity={})", WRITE_BACK_CACHE_KEY, sampleEntity);
+            }
+            logger.info("Persisted {} entities in the database", amountOfsampleEntityToPersist);
+        } catch (RuntimeException exception) {
+            logger.error("Error reading {} set from Redis", WRITE_BACK_CACHE_KEY, exception);
+        }
+    }
+
+    // 3. Entity Select Called. This pattern means read-through.
     public SampleEntity findOne(int sampleEntityId) {
         final var sampleEntityOnCache = redisTemplate.boundValueOps(Integer.toString(sampleEntityId)).get();
         if (sampleEntityOnCache != null) {
@@ -80,34 +99,6 @@ public class DemoWriteBackService {
 
         logger.info("Entity not found (Entity={})", sampleEntityId);
         throw new EntityNotFoundException(sampleEntityId);
-    }
-
-    @Scheduled(fixedDelay = 20000)
-    public void writeBack() {
-        final var amountOfsampleEntityToPersist = redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY).size();
-        if (amountOfsampleEntityToPersist == null || amountOfsampleEntityToPersist == 0) {
-            logger.info("None entity to write back from cache to database");
-            return;
-        }
-
-        logger.info("Found {} Entity to write back from cache to database", amountOfsampleEntityToPersist);
-        final var setOperations = redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY);
-        final var scanOptions = ScanOptions.scanOptions().build();
-
-        try (final var cursor = setOperations.scan(scanOptions)) {
-            assert cursor != null;
-            while (cursor.hasNext()) {
-                final var sampleEntity = cursor.next();
-                sampleEntityRepository.save(sampleEntity);
-                logger.info("Entity saved (Entity={})", sampleEntity);
-
-                redisTemplate.boundSetOps(WRITE_BACK_CACHE_KEY).remove(sampleEntity);
-                logger.info("Entity removed from {} set (Entity={})", WRITE_BACK_CACHE_KEY, sampleEntity);
-            }
-            logger.info("Persisted {} entities in the database", amountOfsampleEntityToPersist);
-        } catch (RuntimeException exception) {
-            logger.error("Error reading {} set from Redis", WRITE_BACK_CACHE_KEY, exception);
-        }
     }
 
 }

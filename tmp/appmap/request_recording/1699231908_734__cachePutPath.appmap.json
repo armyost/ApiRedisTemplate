@@ -1,0 +1,274 @@
+{
+  "events": [
+    {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "content-length": "32",
+          "postman-token": "639f131a-8c37-4ffa-bc8d-81763ae31d9f",
+          "host": "localhost:8090",
+          "content-type": "application/json",
+          "connection": "keep-alive",
+          "accept-encoding": "gzip, deflate, br",
+          "user-agent": "PostmanRuntime/7.34.0",
+          "accept": "*/*"
+        },
+        "normalized_path_info": "/cachePutPath",
+        "path_info": "/cachePutPath",
+        "protocol": "HTTP/1.1",
+        "request_method": "POST"
+      },
+      "id": 1,
+      "thread_id": 31
+    },
+    {
+      "defined_class": "com.example.demo.DemoWriteBackController",
+      "event": "call",
+      "id": 2,
+      "lineno": 30,
+      "method_id": "cachePutPath",
+      "parameters": [
+        {
+          "class": "java.util.LinkedHashMap",
+          "kind": "req",
+          "name": "requestBody",
+          "object_id": 813648944,
+          "value": "{Id=2, Value=Hello World!}"
+        }
+      ],
+      "path": "com/example/demo/DemoWriteBackController.java",
+      "receiver": {
+        "class": "com.example.demo.DemoWriteBackController",
+        "object_id": 1959449975,
+        "value": "com.example.demo.DemoWriteBackController@74cad577"
+      },
+      "static": false,
+      "thread_id": 31
+    },
+    {
+      "defined_class": "com.example.demo.DemoWriteBackService",
+      "event": "call",
+      "id": 3,
+      "lineno": 30,
+      "method_id": "create",
+      "parameters": [
+        {
+          "class": "java.lang.Integer",
+          "kind": "req",
+          "name": "paramId",
+          "object_id": 1645513819,
+          "value": "2"
+        },
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "paramValue",
+          "object_id": 25558028,
+          "value": "Hello World!"
+        }
+      ],
+      "path": "com/example/demo/DemoWriteBackService.java",
+      "receiver": {
+        "class": "com.example.demo.DemoWriteBackService",
+        "object_id": 2019598356,
+        "value": "com.example.demo.DemoWriteBackService@7860a014"
+      },
+      "static": false,
+      "thread_id": 31
+    },
+    {
+      "defined_class": "com.example.demo.SampleEntity",
+      "event": "call",
+      "id": 4,
+      "lineno": 24,
+      "method_id": "setId",
+      "parameters": [
+        {
+          "class": "java.lang.Integer",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1645513819,
+          "value": "2"
+        }
+      ],
+      "path": "com/example/demo/SampleEntity.java",
+      "receiver": {
+        "class": "com.example.demo.SampleEntity",
+        "object_id": 436495043,
+        "value": "SampleEntity(id=2, value=null, createdAt=null, updatedAt=null)"
+      },
+      "static": false,
+      "thread_id": 31
+    },
+    {
+      "elapsed": 0,
+      "event": "return",
+      "id": 5,
+      "parent_id": 4,
+      "thread_id": 31
+    },
+    {
+      "defined_class": "com.example.demo.SampleEntity",
+      "event": "call",
+      "id": 6,
+      "lineno": 24,
+      "method_id": "setValue",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "value",
+          "object_id": 25558028,
+          "value": "Hello World!"
+        }
+      ],
+      "path": "com/example/demo/SampleEntity.java",
+      "receiver": {
+        "class": "com.example.demo.SampleEntity",
+        "object_id": 436495043,
+        "value": "SampleEntity(id=2, value=Hello World!, createdAt=null, updatedAt=null)"
+      },
+      "static": false,
+      "thread_id": 31
+    },
+    {
+      "elapsed": 0,
+      "event": "return",
+      "id": 7,
+      "parent_id": 6,
+      "thread_id": 31
+    },
+    {
+      "elapsed": 0.00231403,
+      "event": "return",
+      "id": 8,
+      "parent_id": 3,
+      "return_value": {
+        "class": "com.example.demo.SampleEntity",
+        "object_id": 436495043,
+        "value": "SampleEntity(id=2, value=Hello World!, createdAt=null, updatedAt=null)"
+      },
+      "thread_id": 31
+    },
+    {
+      "elapsed": 0.00445019,
+      "event": "return",
+      "id": 9,
+      "parent_id": 2,
+      "return_value": {
+        "class": "org.springframework.http.ResponseEntity",
+        "object_id": 1347466111,
+        "value": "<200 OK OK,result successful,[]>"
+      },
+      "thread_id": 31
+    },
+    {
+      "elapsed": 0.00476309,
+      "event": "return",
+      "http_server_response": {
+        "headers": {
+          "Keep-Alive": "timeout=60",
+          "Connection": "keep-alive",
+          "Content-Length": "17",
+          "Date": "Mon, 06 Nov 2023 00:51:48 GMT",
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      },
+      "id": 10,
+      "parent_id": 1,
+      "thread_id": 31
+    }
+  ],
+  "version": "1.2",
+  "metadata": {
+    "name": "POST /cachePutPath (200) - 09:51:48.734",
+    "app": "ApiRedisTemplate",
+    "language": {
+      "name": "java",
+      "version": "11.0.19+7-LTS",
+      "engine": "OpenJDK 64-Bit Server VM"
+    },
+    "client": {
+      "name": "appmap-java",
+      "url": "https://github.com/appland/appmap-java"
+    },
+    "recorder": {
+      "name": "request_recording",
+      "type": "requests"
+    },
+    "recording": {}
+  },
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "cachePutPath",
+                      "type": "function",
+                      "static": false,
+                      "location": "com/example/demo/DemoWriteBackController.java:30"
+                    }
+                  ],
+                  "name": "DemoWriteBackController",
+                  "type": "class"
+                },
+                {
+                  "children": [
+                    {
+                      "name": "setId",
+                      "type": "function",
+                      "static": false,
+                      "location": "com/example/demo/SampleEntity.java:24"
+                    },
+                    {
+                      "name": "setValue",
+                      "type": "function",
+                      "static": false,
+                      "location": "com/example/demo/SampleEntity.java:24"
+                    }
+                  ],
+                  "name": "SampleEntity",
+                  "type": "class"
+                },
+                {
+                  "children": [
+                    {
+                      "name": "create",
+                      "type": "function",
+                      "static": false,
+                      "location": "com/example/demo/DemoWriteBackService.java:30"
+                    }
+                  ],
+                  "name": "DemoWriteBackService",
+                  "type": "class"
+                }
+              ],
+              "name": "demo",
+              "type": "package"
+            }
+          ],
+          "name": "example",
+          "type": "package"
+        }
+      ],
+      "name": "com",
+      "type": "package"
+    },
+    {
+      "type": "http",
+      "name": "HTTP server requests",
+      "children": [
+        {
+          "type": "route",
+          "name": "POST /cachePutPath"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "events": [
+    {
+      "defined_class": "com.example.demo.DemoApplicationTests",
+      "event": "call",
+      "id": 1,
+      "lineno": 11,
+      "method_id": "contextLoads",
+      "path": "com/example/demo/DemoApplicationTests.java",
+      "receiver": {
+        "class": "com.example.demo.DemoApplicationTests",
+        "object_id": 137646750,
+        "value": "com.example.demo.DemoApplicationTests@834529e"
+      },
+      "static": false,
+      "thread_id": 1
+    },
+    {
+      "elapsed": 0,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 1
+    }
+  ],
+  "version": "1.2",
+  "metadata": {
+    "name": "Demo applications context loads",
+    "app": "ApiRedisTemplate",
+    "language": {
+      "name": "java",
+      "version": "11.0.19+7-LTS",
+      "engine": "OpenJDK 64-Bit Server VM"
+    },
+    "client": {
+      "name": "appmap-java",
+      "url": "https://github.com/appland/appmap-java"
+    },
+    "recorder": {
+      "name": "junit",
+      "type": "tests"
+    },
+    "recording": {
+      "defined_class": "com.example.demo.DemoApplicationTests",
+      "method_id": "contextLoads"
+    },
+    "source_location": "com/example/demo/DemoApplicationTests.java:11",
+    "frameworks": [
+      {
+        "name": "JUnit",
+        "version": "5"
+      }
+    ],
+    "test_status": "succeeded"
+  },
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "contextLoads",
+                      "type": "function",
+                      "static": false,
+                      "location": "com/example/demo/DemoApplicationTests.java:11"
+                    }
+                  ],
+                  "name": "DemoApplicationTests",
+                  "type": "class"
+                }
+              ],
+              "name": "demo",
+              "type": "package"
+            }
+          ],
+          "name": "example",
+          "type": "package"
+        }
+      ],
+      "name": "com",
+      "type": "package"
+    }
+  ]
+}

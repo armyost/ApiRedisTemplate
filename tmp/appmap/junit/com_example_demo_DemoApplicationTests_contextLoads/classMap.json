@@ -1,0 +1,32 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "name": "contextLoads",
+                    "type": "function",
+                    "static": false,
+                    "location": "com/example/demo/DemoApplicationTests.java:11"
+                  }
+                ],
+                "name": "DemoApplicationTests",
+                "type": "class"
+              }
+            ],
+            "name": "demo",
+            "type": "package"
+          }
+        ],
+        "name": "example",
+        "type": "package"
+      }
+    ],
+    "name": "com",
+    "type": "package"
+  }
+]

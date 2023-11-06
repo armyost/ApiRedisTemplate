@@ -1,22 +1,12 @@
 package com.example.demo;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.var;
 
 
 @RestController
@@ -37,20 +27,33 @@ public class DemoWriteBackController {
 
     @PostMapping(value = "/cachePutPath", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> cachePutPath(@RequestBody Map<Object, Object> requestBody){
-        
+        logger.info("##### CachePut controller has been called #####");
+
+        // ---- Valiables from Client ----
         int paramId = Integer.parseInt(requestBody.get("Id").toString());
         String paramValue = requestBody.get("Value").toString();
+        // -------------------------------
 
         demoWriteBackService.create(paramId, paramValue);
         
         return new ResponseEntity<>("result successful", HttpStatus.OK);
     } 
 
+    @GetMapping(value = "/readThroughPath")
+    public SampleEntity readThroughPath(@RequestParam int entityId){
+        SampleEntity sampleEntity = demoWriteBackService.findOne(entityId);
+        return sampleEntity;
+    }
 
     /* SAMPLE -------------------------------------------------------------------
 
     @GetMapping(value = "/{postId}")
-    public DemoEntity findGet(@PathVariable String postId){
+    public DemoEntity findGet(@PathVariable int postId){
+        return demoEntity;
+    }
+
+    @GetMapping(value = "")
+    public DemoEntity findGet(@RequestParam int postId){
         return demoEntity;
     }
 

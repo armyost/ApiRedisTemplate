@@ -1,0 +1,72 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "name": "cachePutPath",
+                    "type": "function",
+                    "static": false,
+                    "location": "com/example/demo/DemoWriteBackController.java:30"
+                  }
+                ],
+                "name": "DemoWriteBackController",
+                "type": "class"
+              },
+              {
+                "children": [
+                  {
+                    "name": "setId",
+                    "type": "function",
+                    "static": false,
+                    "location": "com/example/demo/SampleEntity.java:24"
+                  },
+                  {
+                    "name": "setValue",
+                    "type": "function",
+                    "static": false,
+                    "location": "com/example/demo/SampleEntity.java:24"
+                  }
+                ],
+                "name": "SampleEntity",
+                "type": "class"
+              },
+              {
+                "children": [
+                  {
+                    "name": "create",
+                    "type": "function",
+                    "static": false,
+                    "location": "com/example/demo/DemoWriteBackService.java:30"
+                  }
+                ],
+                "name": "DemoWriteBackService",
+                "type": "class"
+              }
+            ],
+            "name": "demo",
+            "type": "package"
+          }
+        ],
+        "name": "example",
+        "type": "package"
+      }
+    ],
+    "name": "com",
+    "type": "package"
+  },
+  {
+    "type": "http",
+    "name": "HTTP server requests",
+    "children": [
+      {
+        "type": "route",
+        "name": "POST /cachePutPath"
+      }
+    ]
+  }
+]

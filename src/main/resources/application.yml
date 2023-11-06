@@ -11,8 +11,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql01.armyost.com:30010/iotdb?useSSL=false&useUnicode=true
-    username: XXXX
-    password: XXXX
+    username: XXXXXX
+    password: XXXXXX
 
   ## JPA Setting Info
   jpa:
